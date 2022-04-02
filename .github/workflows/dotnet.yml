@@ -25,7 +25,10 @@ jobs:
         working-directory: PetStoreAPI
       - name: Test with the dotnet CLI
         run: dotnet test
+        working-directory: PetStoreAPI
       - name: Build
         run: dotnet build --configuration Release --no-restore
+        working-directory: PetStoreAPI
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+        working-directory: PetStoreAPI
