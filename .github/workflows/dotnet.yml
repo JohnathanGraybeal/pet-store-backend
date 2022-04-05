@@ -19,7 +19,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
         run: dotnet restore
-        working-directory: PetStoreAPI/PetStoreAPI
+        working-directory: PetStoreAPI
       - name: Build
         run: dotnet build
         working-directory: PetStoreAPI
