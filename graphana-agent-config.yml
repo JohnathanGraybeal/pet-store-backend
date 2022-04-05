@@ -1,0 +1,21 @@
+server:
+  http_listen_port: 9000
+
+prometheus:
+  wal_directory: "./"
+  global:
+    scrape_interval: 60s
+  configs:
+    - name: agent
+      host_filter: false
+      scrape_configs:
+        - job_name: api-metrics
+          metrics_path: /metrics
+          scheme: https
+          static_configs:
+            - targets: ["https://csci4350-001-pet-store.herokuapp.com"]
+      remote_write:
+        - url: https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push
+          basic_auth:
+            username: $GRAFANA_CLOUD_USERNAME
+            password: $GRAFANA_CLOUD_API_KEY
