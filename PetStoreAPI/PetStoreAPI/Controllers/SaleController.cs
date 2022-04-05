@@ -25,14 +25,14 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Sale>>> GetAll()
         {
             var sales = await _sale.ReadAllAsync();
             return Ok(sales);
         }
 
         [HttpGet("one/{cityid}")]
-        public async Task<IActionResult> GetOne(int saleId)
+        public async Task<ActionResult<Sale>> GetOne(int saleId)
         {
             var sale = await _sale.ReadAsync(saleId);
 
@@ -45,21 +45,21 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Post(Sale sale)
+        public async Task<ActionResult<Sale>> Post(Sale sale)
         {
             await _sale.CreateAsync(sale);
             return CreatedAtAction("Get", new { saleId = sale.Id }, sale);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(Sale Updated)
+        public async Task<ActionResult<Sale>> Put(Sale Updated)
         {
             await _sale.UpdateAsync(Updated.Id, Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(int saleId)
+        public async Task<ActionResult<Sale>> Remove(int saleId)
         {
             await _sale.DeleteAsync(saleId);
             return NoContent();

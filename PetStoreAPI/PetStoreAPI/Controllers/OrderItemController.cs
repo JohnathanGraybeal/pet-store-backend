@@ -22,14 +22,14 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<OrderItem>>> GetAll()
         {
             var orderitems = await _orderitem.ReadAllAsync();
             return Ok(orderitems);
         }
 
         [HttpGet("one/{ponumber, itemid}")]
-        public async Task<IActionResult> GetOne(int ponumber, int itemid)
+        public async Task<ActionResult<OrderItem>> GetOne(int ponumber, int itemid)
         {
             var orderitem = await _orderitem.ReadAsync(ponumber, itemid);
 
@@ -41,21 +41,21 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Post(OrderItem orderitem)
+        public async Task<ActionResult<OrderItem>> Post(OrderItem orderitem)
         {
             await _orderitem.CreateAsync(orderitem);
             return CreatedAtAction("Get", new { ponumber = orderitem.MerchandiseId }, orderitem);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(OrderItem Updated)
+        public async Task<ActionResult<OrderItem>> Put(OrderItem Updated)
         {
             await _orderitem.UpdateAsync(Updated.MerchandiseOrderId, Updated.MerchandiseId, Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(int ponumber, int itemid)
+        public async Task<ActionResult<OrderItem>> Remove(int ponumber, int itemid)
         {
             await _orderitem.DeleteAsync(ponumber, itemid);
             return NoContent();

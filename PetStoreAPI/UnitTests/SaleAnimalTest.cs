@@ -11,30 +11,30 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace UnitTests
-{
-    public class SaleTest
+{    
+    public class SaleAnimalTest
     {
         /// <summary>
         /// Tests that Create method creates a new entry.
-        /// public async Task<ActionResult<Sale>> Post(Sale sale)
+        /// public async Task<ActionResult<SaleAnimal>> Post(SaleAnimal saleAnimal)
         /// </summary>
         /// <returns>CreatedAtActionResult</returns>
         [Test]
-        public async Task Create_Adds_Sale()
+        public async Task Create_Adds_SaleAnimal()
         {
             //Arrange
-            var fakeSale = A.Dummy<Sale>();
-            var dataStore = A.Fake<ISaleRepository>();
-            A.CallTo(() => dataStore.CreateAsync(fakeSale)).Returns(Task.FromResult(fakeSale));
-            var controller = new SaleController(dataStore);
+            var fakeSaleAnimal = A.Dummy<SaleAnimal>();
+            var dataStore = A.Fake<ISaleAnimalRepository>();
+            A.CallTo(() => dataStore.CreateAsync(fakeSaleAnimal)).Returns(Task.FromResult(fakeSaleAnimal));
+            var controller = new SaleAnimalController(dataStore);
 
             //Act
-            var actionResult = await controller.Post(fakeSale);
+            var actionResult = await controller.Post(fakeSaleAnimal);
 
             //Assert
             var result = actionResult.Result as CreatedAtActionResult;
             Assert.IsNotNull(result);   // Checks that an entry is created.
-            Assert.AreEqual(0, result.RouteValues["saleId"]);   // Checks that the Id of the entry is what was submitted.
+            Assert.AreEqual(0, result.RouteValues["AnimalId"]);   // Checks that the Id of the entry is what was submitted.
         }
 
         /// <summary>
@@ -47,18 +47,18 @@ namespace UnitTests
         {
             //Arrange
             int count = 3;
-            var fakeSales = A.CollectionOfDummy<Sale>(count).AsEnumerable();
-            var dataStore = A.Fake<ISaleRepository>();
-            A.CallTo(() => dataStore.ReadAllAsync()).Returns(Task.FromResult(fakeSales));
-            var controller = new SaleController(dataStore);
+            var fakeSaleAnimals = A.CollectionOfDummy<SaleAnimal>(count).AsEnumerable();
+            var dataStore = A.Fake<ISaleAnimalRepository>();
+            A.CallTo(() => dataStore.ReadAllAsync()).Returns(Task.FromResult(fakeSaleAnimals));
+            var controller = new SaleAnimalController(dataStore);
 
             //Act
             var actionResult = await controller.GetAll();
 
             //Assert
             var result = actionResult.Result as OkObjectResult;
-            var returnSales = result.Value as IEnumerable<Sale>;
-            Assert.AreEqual(count, returnSales.Count());    // Checks that the size of the returned list is the same as the original
+            var returnSaleAnimals = result.Value as IEnumerable<SaleAnimal>;
+            Assert.AreEqual(count, returnSaleAnimals.Count());    // Checks that the size of the returned list is the same as the original
         }
 
         /// <summary>
@@ -71,22 +71,24 @@ namespace UnitTests
         {
             //Arrange
             int Id = 1;
-            var fakeSale = A.Fake<Sale>();
-            fakeSale.Id = Id;
-            var fakeSale2 = A.Fake<Sale>();
-            fakeSale2.Id = 2;
-            var dataStore = A.Fake<ISaleRepository>();
-            A.CallTo(() => dataStore.ReadAsync(Id)).Returns(Task.FromResult(fakeSale));
-            var controller = new SaleController(dataStore);
+            var fakeSaleAnimal = A.Fake<SaleAnimal>();
+            fakeSaleAnimal.SaleId = Id;
+            fakeSaleAnimal.AnimalId = Id;
+            var fakeSaleAnimal2 = A.Fake<SaleAnimal>();
+            fakeSaleAnimal2.SaleId = 2;
+            fakeSaleAnimal2.AnimalId = 2;
+            var dataStore = A.Fake<ISaleAnimalRepository>();
+            A.CallTo(() => dataStore.ReadAsync(Id, Id)).Returns(Task.FromResult(fakeSaleAnimal));
+            var controller = new SaleAnimalController(dataStore);
 
             //Act
-            var actionResult = await controller.GetOne(Id);
+            var actionResult = await controller.GetOne(Id, Id);
 
             //Assert
             var result = actionResult.Result as OkObjectResult;
-            var returnSale = result.Value;
-            Assert.IsNotNull(returnSale);   // Checks that returned entry is not null
-            Assert.AreEqual(fakeSale, result.Value);    // Checks that returned entry is the entry with given ID
+            var returnSaleAnimal = result.Value;
+            Assert.IsNotNull(returnSaleAnimal);   // Checks that returned entry is not null
+            Assert.AreEqual(fakeSaleAnimal, result.Value);    // Checks that returned entry is the entry with given ID
         }
 
         /// <summary>
@@ -98,19 +100,20 @@ namespace UnitTests
         public async Task Put_Updates_Entry()
         {
             //Arrange
-            var fakeSale = A.Dummy<Sale>();
-            var dataStore = A.Fake<ISaleRepository>();
-            A.CallTo(() => dataStore.UpdateAsync(0, fakeSale)).Returns(Task.FromResult(fakeSale));
-            var controller = new SaleController(dataStore);
+            var fakeSaleAnimal = A.Dummy<SaleAnimal>();
+            var dataStore = A.Fake<ISaleAnimalRepository>();
+            A.CallTo(() => dataStore.UpdateAsync(0, 0, fakeSaleAnimal)).Returns(Task.FromResult(fakeSaleAnimal));
+            var controller = new SaleAnimalController(dataStore);
 
             //Act
-            var actionResult = await controller.Put(fakeSale);
+            var actionResult = await controller.Put(fakeSaleAnimal);
 
             //Assert
             var result = actionResult.Result as NoContentResult;
             Assert.IsNotNull(result);   // Checks that an entry is updated.
             Assert.IsInstanceOf<NoContentResult>(result);   // Checks that the result is of the correct type
             Assert.AreEqual(204, result.StatusCode);    // Checks that correct status code is given
+
         }
 
         /// <summary>
@@ -123,13 +126,13 @@ namespace UnitTests
         {
             //Arrange
             int Id = 1;
-            var fakeSale = A.Dummy<Sale>();
-            var dataStore = A.Fake<ISaleRepository>();
-            A.CallTo(() => dataStore.DeleteAsync(Id)).Returns(Task.FromResult(fakeSale));
-            var controller = new SaleController(dataStore);
+            var fakeSaleAnimal = A.Dummy<SaleAnimal>();
+            var dataStore = A.Fake<ISaleAnimalRepository>();
+            A.CallTo(() => dataStore.DeleteAsync(Id, Id)).Returns(Task.FromResult(fakeSaleAnimal));
+            var controller = new SaleAnimalController(dataStore);
 
             //Act
-            var actionResult = await controller.Remove(Id);
+            var actionResult = await controller.Remove(Id, Id);
 
             //Assert
             var result = actionResult.Result as NoContentResult;

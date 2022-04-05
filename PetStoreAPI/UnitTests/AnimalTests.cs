@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace UnitTests
 {
-    class AnimalTests
+    public class AnimalTests
     {
 
         [Test]

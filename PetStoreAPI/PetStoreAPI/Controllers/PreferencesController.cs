@@ -24,14 +24,14 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Preferences>>> GetAll()
         {
             var preferencess = await _preferences.ReadAllAsync();
             return Ok(preferencess);
         }
 
         [HttpGet("one/{keyid}")]
-        public async Task<IActionResult> GetOne(int keyid)
+        public async Task<ActionResult<Preferences>> GetOne(int keyid)
         {
             var preferences = await _preferences.ReadAsync(keyid);
 
@@ -43,21 +43,21 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Post(Preferences preferences)
+        public async Task<ActionResult<Preferences>> Post(Preferences preferences)
         {
             await _preferences.CreateAsync(preferences);
             return CreatedAtAction("Get", new { keyid = preferences.KeyId }, preferences);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(Preferences Updated)
+        public async Task<ActionResult<Preferences>> Put(Preferences Updated)
         {
             await _preferences.UpdateAsync(Updated.KeyId, Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(int keyid)
+        public async Task<ActionResult<Preferences>> Remove(int keyid)
         {
             await _preferences.DeleteAsync(keyid);
             return NoContent();
