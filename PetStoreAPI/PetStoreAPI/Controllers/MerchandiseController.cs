@@ -24,7 +24,7 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll(int page, int limit)
+        public async Task<ActionResult<IEnumerable<Merchandise>>> GetAll(int page, int limit)
         {
             var merchandise = await _merchandise.ReadAllAsync();
             var total = merchandise.Select(p => p.Id).Count();
@@ -44,7 +44,7 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("one/{id}")]
-        public async Task<IActionResult> GetOne(int itemId)
+        public async Task<ActionResult<Merchandise>> GetOne(int itemId)
         {
             var merchandise = await _merchandise.ReadAsync(itemId);
 
@@ -55,21 +55,21 @@ namespace PetStoreAPI.Controllers
             return Ok(merchandise);
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Post(Merchandise merchandise)
+        public async Task<ActionResult<Merchandise>> Post(Merchandise merchandise)
         {
             await _merchandise.CreateAsync(merchandise);
             return CreatedAtAction("Get", new { itemId = merchandise.Id }, merchandise);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(Merchandise Updated)
+        public async Task<ActionResult<Merchandise>> Put(Merchandise Updated)
         {
             await _merchandise.UpdateAsync(Updated.Id, Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(int itemId)
+        public async Task<ActionResult<Merchandise>> Remove(int itemId)
         {
             await _merchandise.DeleteAsync(itemId);
             return NoContent();

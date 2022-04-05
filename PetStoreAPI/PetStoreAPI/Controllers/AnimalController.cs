@@ -33,7 +33,7 @@ namespace PetStoreAPI.Controllers
     Tags = new[] { "Animal" }
     )]
         [SwaggerResponse(200, "Returns all animals", typeof(List<Animal>))]
-        public async Task <IActionResult> GetAll(int page, int limit)
+        public async Task<ActionResult<Animal>> GetAll(int page, int limit)
         {
             var animals = await _animal.ReadAllAsync();
            
@@ -65,7 +65,7 @@ namespace PetStoreAPI.Controllers
         [SwaggerResponse(200, "Returns One animal", typeof(Animal))]
         [SwaggerResponse(404, "Specified animal wasn't found", null)]
 
-        public async Task<IActionResult> GetOne(int id)
+        public async Task<ActionResult<Merchandise>> GetOne(int id)
         {
             var animal = await _animal.ReadAsync(id);
 
@@ -84,7 +84,7 @@ namespace PetStoreAPI.Controllers
     Tags = new[] { "Animal" }
     )]
         [SwaggerResponse(201, "Returns created at action response")]
-        public async Task<IActionResult> Post( Animal animal)
+        public async Task<ActionResult<Merchandise>> Post( Animal animal)
         {
             await _animal.CreateAsync(animal);
             return CreatedAtAction("Get", new { id = animal.Id }, animal);
@@ -99,7 +99,7 @@ namespace PetStoreAPI.Controllers
     Tags = new[] { "Animal" }
     )]
         [SwaggerResponse(204, "Successful returns no content")]
-        public async Task<IActionResult> Put( Animal Updated)
+        public async Task<ActionResult<Merchandise>> Put( Animal Updated)
         {
             await _animal.UpdateAsync(Updated.Id, Updated);
             return NoContent();
@@ -113,7 +113,7 @@ namespace PetStoreAPI.Controllers
     Tags = new[] { "Animal" }
     )]
         [SwaggerResponse(204, "Successful specified animal was deleted")]
-        public async Task<IActionResult> Remove(int id)
+        public async Task<ActionResult<Merchandise>> Remove(int id)
         {
             await _animal.DeleteAsync(id);
             return NoContent();

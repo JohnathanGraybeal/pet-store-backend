@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PetStoreAPI.Models;
 using PetStoreAPI.Services;
 using PetStoreAPI.Services.Interfaces;
+using Prometheus;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,6 +60,7 @@ namespace PetStoreAPI
             {
                // options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
             });
+            services.AddSingleton<MetricReporter>();
             services.AddScoped<IAnimalRepository, AnimalRepository>();
             services.AddScoped<IAnimalOrderRepository, AnimalOrderRepository>();
             services.AddScoped<IAnimalOrderItemRepository, AnimalOrderItemRepository>();
@@ -106,9 +109,15 @@ namespace PetStoreAPI
             app.UseCors();
 
             app.UseAuthorization();
+            app.UseMetricServer();
+            app.UseHttpMetrics();
+           
+
+            
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapMetrics();
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                     name: "default",

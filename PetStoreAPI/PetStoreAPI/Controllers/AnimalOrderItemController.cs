@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetStoreAPI.Models.Entities;
-using PetStoreAPI.Services;
 using PetStoreAPI.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,14 +22,14 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<AnimalOrderItem>>> GetAll()
         {
             var animalOrderItems = await _animalorderitem.ReadAllAsync();
             return Ok(animalOrderItems);
         }
 
         [HttpGet("one/{orderid,animalid}")]
-        public async Task<IActionResult> GetOne(int orderid, int animalid)
+        public async Task<ActionResult<AnimalOrderItem>> GetOne(int orderid, int animalid)
         {
             var animalOrderItem = await _animalorderitem.ReadAsync(orderid, animalid);
 
@@ -43,21 +41,21 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Post(AnimalOrderItem animalOrderItem)
+        public async Task<ActionResult<AnimalOrderItem>> Post(AnimalOrderItem animalOrderItem)
         {
             await _animalorderitem.CreateAsync(animalOrderItem);
             return CreatedAtAction("Get", new { orderid = animalOrderItem.AnimalOrderId, animalId = animalOrderItem.AnimalId }, animalOrderItem);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(AnimalOrderItem Updated)
+        public async Task<ActionResult<AnimalOrderItem>> Put(AnimalOrderItem Updated)
         {
             await _animalorderitem.UpdateAsync(Updated.AnimalOrderId, Updated.AnimalId, Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(int orderid, int animalid)
+        public async Task<ActionResult<AnimalOrderItem>> Remove(int orderid, int animalid)
         {
             await _animalorderitem.DeleteAsync(orderid, animalid);
             return NoContent();

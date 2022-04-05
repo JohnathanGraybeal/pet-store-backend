@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetStoreAPI.Models.Entities;
-using PetStoreAPI.Services;
 using PetStoreAPI.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,14 +22,14 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Category>>> GetAll()
         {
             var categories = await _category.ReadAllAsync();
             return Ok(categories);
         }
 
-        [HttpGet("one/{id}")]
-        public async Task<IActionResult> GetOne(string category)
+        [HttpGet("one/{animalCategory}")]
+        public async Task<ActionResult<Category>> GetOne(string category)
         {
             var cat = await _category.ReadAsync(category);
 
@@ -44,21 +42,21 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Post(Category category)
+        public async Task<ActionResult<Category>> Post(Category category)
         {
             await _category.CreateAsync(category);
             return CreatedAtAction("Get", new { id = category.AnimalCategory }, category);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(Category Updated)
+        public async Task<ActionResult<Category>> Put(Category Updated)
         {
             await _category.UpdateAsync(Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(string category)
+        public async Task<ActionResult<Category>> Remove(string category)
         {
             await _category.DeleteAsync(category);
             return NoContent();

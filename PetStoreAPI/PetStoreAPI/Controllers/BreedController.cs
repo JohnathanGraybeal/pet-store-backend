@@ -24,14 +24,14 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Breed>>> GetAll()
         {
             var breeds = await _animalBreed.ReadAllAsync();
             return Ok(breeds);
         }
 
         [HttpGet("one/{id}")]
-        public async Task<IActionResult> GetOne(Breed breed)
+        public async Task<ActionResult<Breed>> GetOne(Breed breed)
         {
             var breeds = await _animalBreed.ReadAsync(breed);
 
@@ -42,21 +42,21 @@ namespace PetStoreAPI.Controllers
             return Ok(breeds);
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Post(Breed breed)
+        public async Task<ActionResult<Breed>> Post(Breed breed)
         {
             await _animalBreed.CreateAsync(breed);
             return CreatedAtAction("Get", new { category = breed.Category, animalBreed = breed.AnimalBreed }, breed);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(Breed Updated)
+        public async Task<ActionResult<Breed>> Put(Breed Updated)
         {
             await _animalBreed.UpdateAsync(Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(Breed breed)
+        public async Task<ActionResult<Breed>> Remove(Breed breed)
         {
             await _animalBreed.DeleteAsync(breed);
             return NoContent();

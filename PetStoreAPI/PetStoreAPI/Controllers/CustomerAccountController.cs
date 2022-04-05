@@ -24,14 +24,14 @@ namespace PetStoreAPI.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<CustomerAccount>>> GetAll()
         {
             var customerAccount = await _customerAccount.ReadAllAsync();
             return Ok(customerAccount);
         }
 
         [HttpGet("one/{id}")]
-        public async Task<IActionResult> GetOne(int accountId)
+        public async Task<ActionResult<CustomerAccount>> GetOne(int accountId)
         {
             var customerAccount = await _customerAccount.ReadAsync(accountId);
 
@@ -42,21 +42,21 @@ namespace PetStoreAPI.Controllers
             return Ok(customerAccount);
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Post(CustomerAccount customerAccount)
+        public async Task<ActionResult<CustomerAccount>> Post(CustomerAccount customerAccount)
         {
             await _customerAccount.CreateAsync(customerAccount);
             return CreatedAtAction("Get", new { id = customerAccount.Id }, customerAccount);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put(CustomerAccount Updated)
+        public async Task<ActionResult<CustomerAccount>> Put(CustomerAccount Updated)
         {
             await _customerAccount.UpdateAsync(Updated.Id, Updated);
             return NoContent();
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Remove(int AccountId)
+        public async Task<ActionResult<CustomerAccount>> Remove(int AccountId)
         {
             await _customerAccount.DeleteAsync(AccountId);
             return NoContent();
